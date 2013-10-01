@@ -112,6 +112,15 @@ var onSteamLogOn = function onSteamLogOn(){
             //     });
             // }, 60000);
 
+            // Jimmy's experiments - doesn't seem to do anything. :3
+            Dota2.resourceRequest("76561197989222171", 28956443, function(steamId64, body) {
+                console.log(JSON.stringify(body));
+            });
+
+            Dota2.on("playerResourceData", function(steamId64, body) {
+                console.log(JSON.stringify(body));
+            });
+
         });
 
         Dota2.on("unready", function onUnready(){
