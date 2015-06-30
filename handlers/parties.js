@@ -48,7 +48,7 @@ Dota2.Dota2Client.prototype.leaveParty = function() {
   var payload = base_gcmessages.CMsgLeaveParty.serialize({});
   this.Party = null;
 
-  this._client.toGC(this._appid, (Dota2.EGCBaseMsg.k_EMsgGCLeaveParty | protoMask), payload, callback);
+  this._client.toGC(this._appid, (Dota2.EGCBaseMsg.k_EMsgGCLeaveParty | protoMask), payload, null);
 };
 
 Dota2.Dota2Client.prototype.setPartyCoach = function(coach) {
@@ -71,23 +71,24 @@ Dota2.Dota2Client.prototype.setPartyCoach = function(coach) {
   this._client.toGC(this._appid, (Dota2.k_EMsgGCPartyMemberSetCoach | protoMask), payload, callback);
 };
 
-Dota2.Dota2Client.prototype.inviteToParty = function(steam_id) {
-  steam_id = steam_id || null;
+Dota2.Dota2Client.prototype.inviteToParty = function(steamId) {
+  steamId = steamId || null;
+  var callback = function(msg) {console.log(msg); };
 
   if (!this._gcReady) {
     if (this.debug) util.log("GC not ready, please listen for the 'ready' event.");
     return null;
   }
 
-  if (steam_id == null) {
+  if (steamId == null) {
     if (this.debug) util.log("Steam ID required to create a party invite.");
     return null;
   }
 
-  if (this.debug) util.log("Inviting "+steam_id+" to a party.");
+  if (this.debug) util.log("Inviting "+steamId+" to a party.");
   // todo: set client version here?
   var payload = base_gcmessages.CMsgInviteToParty.serialize({
-    steam_id: steam_id
+    steamId: steamId
   });
 
   this._client.toGC(this._appid, (Dota2.EGCBaseMsg.k_EMsgGCInviteToParty | protoMask), payload, callback);
